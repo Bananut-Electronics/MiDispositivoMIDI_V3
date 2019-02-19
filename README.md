@@ -55,8 +55,13 @@ TODO
 
 # MiDispositivoMIDI V3
 We are proud to present the MiDispositivoMIDI revA3C ([what is that?](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/wiki), which is the latest version we have out in the market. You can buy it in our webpage or in tindie. In this repository you will find documentation about the controller and code. If you know how to code and you want to colaborate with the project, feel free to do it. If you don't, here you will find a bunch of codes that you just will need to upload to your controller, simple as that.
-![MDM_V3_1](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/mdm.jpg)
-![MDM_V3_2](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/back.jpg)
+<a href="www.facebook.com/bananutelectronics">
+    <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/mdm.jpg">
+</a>
+
+<a href="www.facebook.com/bananutelectronics">
+    <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/back.jpg">
+</a>
 
 
 * MiDispositivoMIDI is the latest version of our controller.
@@ -75,7 +80,9 @@ We are proud to present the MiDispositivoMIDI revA3C ([what is that?](https://gi
 
 
 # Expansions
-TODO
+<a href="www.facebook.com/bananutelectronics">
+    <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/configuration.jpg">
+</a>
 
 # Documentation
 TODO
