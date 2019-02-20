@@ -47,16 +47,31 @@
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/header_bn.png">
 
 # About us
-Hi! We are BanaNut Electronics and we develop software and hardware for Arduino with educational purposes. Feel free to visit us in out social networks:
+Hi! We are BanaNut Electronics and we develop software and hardware for Arduino with educational purposes. We were born at the UPM University in Madrid during 2013 and we haven't stopped ever since.
+
+  
+<center>
+    <table>
+        <tr>
+            <td>Foo1</td> <td>Foo2</td>
+        </tr>
+    </table>
+</center>
+
 
 ---
-
 
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/header_bn2.png">
 
 # History
-TODO
+Everything started with the first version at the Polytechnical University of Madrid (UPM) in 2013. We were a couple of young students interested in music and electronics, and we came up with this idea. We started reusing some hardware, mainly found at SparkFun's website, but only one year later, we had the second version that was fully designed by us. After some trial and error and feedback from users and friends, we released this third version V3 in 2017. We not only released the code, but also we started producing devices and selling them on the internet, first in our web and later on at Tindie.com store.
+
+During the years, the different versions of MiDispositivoMIDI have been used by many people, engineers, musicians and even kids. We gave some workshops at UPM Madrid for students in Electrical and Telecommunications Engineering, where we gave all the materials and the students had to solder, assembly and code the device.
+
+<p align="center">
+<img width=32% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_VA3C/raw/master/04_img/MDM_V3_INTRO_Workshop_0.png">  <img width=28% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_VA3C/raw/master/04_img/MDM_V3_INTROWorkshop_1.png">
+</a>
 
 ---
 
