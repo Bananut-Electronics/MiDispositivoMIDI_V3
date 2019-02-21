@@ -12,6 +12,9 @@
   </a>
 </p>
 </p>
+
+---
+
 <h2 align="center">❤️ Follow us! ❤️</h2>
 <p align="center">
   <a href="https://www.facebook.com/bananutelectronics">
@@ -30,11 +33,15 @@
 <img border="0" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/twitter.svg" width="64" height="64"></a>
 </p>
 
+---
+
 <h2 align="center">💶 Want to buy the product? 💶</h2>
 
 <p align="center">
   <a href="https://www.tindie.com/stores/bnelectronics/?ref=offsite_badges&utm_source=sellers_bnelectronics&utm_medium=badges&utm_campaign=badge_medium"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
 </p>
+
+---
 
 <h2 align="center">📗 Index 📗</h2>
 
@@ -46,6 +53,8 @@
   <a href="#documentation">Documentation</a> •
   <a href="#license">License</a>
 </p>
+
+---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/header_bn.png">
 
