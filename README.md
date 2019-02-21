@@ -1,6 +1,11 @@
+<p align="center">
+  <a href="www.facebook.com/bananutelectronics">
+    <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/mdmv3_gif.gif">
+  </a>
+
 <h1 align="center"> ⭐️ MiDispositivoMIDI V3 ⭐️ </h1>
 <p align="center">
-  An open source Arduino based MIDI controller, with 16 buttons and USB interface. Ready to Plug&Play and start making music.
+  Connect our device to your computer and start making music! Totally Plug&Play without any extra software, just your favourite MIDI sequencer (Logic, Ableto, Nuendo). It is not only a great tool for making music and experimenting, you can also use it to learn more about electronics, programming and Arduino. You have tons of code examples ready to load, but if you feel up to it, you can also contribute with your code. And last but not least! It is open source!
   <p align="center">
   <a href="www.facebook.com/bananutelectronics">
     <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/mdm.jpeg">
