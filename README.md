@@ -28,9 +28,7 @@
 <h2 align="center">💶 Want to buy the product? 💶</h2>
 
 <p align="center">
-  <a href="https://www.tindie.com/products/bnelectronics/midispositivomidi-v3-plugplay-arduino-midi/">
-    <img width=12% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/04_img/tindie_logo.png">
-  </a>
+  <a href="https://www.tindie.com/stores/bnelectronics/?ref=offsite_badges&utm_source=sellers_bnelectronics&utm_medium=badges&utm_campaign=badge_medium"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
 </p>
 
 <h2 align="center">📗 Index 📗</h2>
