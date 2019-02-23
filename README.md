@@ -186,4 +186,5 @@ We invite you to check our YouTube channel, where we post videos about our devic
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn8.png">
 
 # License
+
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">MiDispositivoMIDI</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="www.bananutelectronics.com" property="cc:attributionName" rel="cc:attributionURL">Alvaro Lopez & Pablo de Miguel Morales</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br />
