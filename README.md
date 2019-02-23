@@ -52,6 +52,8 @@
   <a href="#midispositivomidi-v3">MiDispositivoMIDI V3</a> •
   <a href="#expansions">Expansions</a> •
   <a href="#documentation">Documentation</a> •
+  <a href="#media">Media</a> •
+  <a href="#contributing">Contributing</a> •
   <a href="#license">License</a>
 </p>
 
@@ -82,7 +84,7 @@ Everything started with the first version at the Polytechnical University of Mad
 During the years, the different versions of MiDispositivoMIDI have been used by many people, engineers, musicians and even kids. We gave some workshops at UPM Madrid for students in Electrical and Telecommunications Engineering, where we gave all the materials and the students had to solder, assembly and code the device.
 
 <p align="center">
-<img width=32% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_VA3C/raw/master/images/MDM_V3_INTRO_Workshop_0.png">  <img width=28% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_VA3C/raw/master/images/MDM_V3_INTROWorkshop_1.png">
+<img width="360" height="280" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_VA3C/raw/master/images/MDM_V3_INTRO_Workshop_0.jpg">  <img width="360" height="280" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_VA3C/raw/master/images/MDM_V3_INTROWorkshop_1.jpg">
 </a>
 
 ---
@@ -90,7 +92,9 @@ During the years, the different versions of MiDispositivoMIDI have been used by 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn3.png">
 
 # MiDispositivoMIDI V3
-We are proud to present the MiDispositivoMIDI revA3C ([what is that?](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/wiki), which is the latest version we have out in the market. You can buy it in our webpage or in tindie. In this repository you will find documentation about the controller and code. If you know how to code and you want to colaborate with the project, feel free to do it. If you don't, here you will find a bunch of codes that you just will need to upload to your controller, simple as that.
+We are proud to present the MiDispositivoMIDI V3, which is the latest version we have out in the market (Jan 2019). MiDispositivoMIDI is an open source MIDI controller based on Arduino. In other words, its a small device with tons of LEDs and buttons, that you can connect to your computer to, in example, make music. Our device works with the MIDI protocol, a very well known protocol used in the music industry. You can just plug our device and start using it with your favourite DAW, such as Logic, Ableton or Cubase. No other extra softare is needed.
+
+If you are also interested in programming and electronics, this device offer you a great tool to learn by example. You can also use it to prototype and play around. And also, since it is open source you can fully costumize it to your needs. If you don't know much about coding, just load the codes that we provide, and use them. But if you like coding, you can also publish your code with new features or improvements for others to use.
 
 <p align="center">
 <a href="www.facebook.com/bananutelectronics">
@@ -102,49 +106,81 @@ We are proud to present the MiDispositivoMIDI revA3C ([what is that?](https://gi
     <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/back.jpg">
 </a>
 
-
-
-* MiDispositivoMIDI is the latest version of our controller.
-* It can act as any other MIDI device. There is no need to convert from serial to MIDI.
+These are the features of our device:
+* Plug & Play MIDI device.
+* Open source based on Arduino.
 * Have 16 pad buttons in a 4x4 matrix.
 * Have 2 lateral buttons.
 * Have RGB leds with 256 levels of intensity of each color.
 * Micro USB conection.
 * Dimensions of 10x10 cm.
+* Modular design. Connect up to 4 devices.
+* Fully compatible with Logic, Ableton or Cubase.
 
-* https://www.youtube.com/watch?v=3QnzLwpbpRE&t
-* https://www.youtube.com/watch?v=8WFfShg-0Dk
-* https://www.youtube.com/watch?v=2y8fhmTmedI
-* https://www.youtube.com/watch?v=TsuVpFoLFyI
+<p align="center">
+<img width="400" height="225" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_4By4_GIF.gif">  <img width="350" height="225" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_4By4_PIC1.jpg">
+</a>
+
 ---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn4.png">
 
 # Expansions
 
+Our device has a modular design, which means that with the same hardware, you can keep adding modules to convert it into a bigger controller. For example, if you put four MiDispositivoMIDI V3 into a 8x8 configuration, you will have 64 buttons. All this can be done using the same hardware and with very few modificatons in the code. Note that you can also replace a 4x4 button matrix by a 4x4 potentiometer matrix, but this feature is not implemented yet.
+
 <p align="center">
 <a href="www.facebook.com/bananutelectronics">
     <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/configuration.jpg">
 </a>
+
+## 4x16 Configuration
+
+You can connect 4 MiDispositivoMIDI V3 in a 4x16 configuration to get the following. With something like this, you can, for example, create an step sequencer. See this video for an example:
+* https://www.youtube.com/watch?v=bYyvVDn-gKs
+
+<p align="center">
+<img width="400" height="225" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_4By16_GIF.gif">  <img width="350" height="225" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_4By16PIC1.jpg">
+</a>
+
+## 8x8 Configuration
+Same as before, you can connect the devices with a different configuration. Note that the connections are done under the PCB with an extra PCB, so no extra wiring is needed.
+
+<p align="center">
+<img width="400" height="255" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_8By16_GIF.gif">  <img width="350" height="255" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_8By8_PIC1.jpg">
+</a>
+
+## 4x8 Configuration
+TODO
 
 ---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn5.png">
 
 # Documentation
-TODO
+
+We provide a C++ Arduino library that you can use with our device, that simplifies the tasks of handling the LEDs and buttons. The code is self documented, but we have also written a nice Wiki page where you can find more information about the hardware, some hints about MIDI protocol and some low level software examples in Arduino, that will allow you to understand how it works:
+* Wiki: https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/wiki
+
 ---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn6.png">
 
-# todo 1
-TODO
+# Media
+
+We invite you to check our YouTube channel, where we post videos about our devices. You can also follow other social networks such as Instagram o Facebook.
+
+* https://www.youtube.com/watch?v=3QnzLwpbpRE&t
+* https://www.youtube.com/watch?v=8WFfShg-0Dk
+* https://www.youtube.com/watch?v=2y8fhmTmedI
+* https://www.youtube.com/watch?v=TsuVpFoLFyI
+
 ---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn7.png">
 
-# todo 2
-TODO
+# Contributing
+
 ---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn8.png">
