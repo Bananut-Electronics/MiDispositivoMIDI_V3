@@ -98,10 +98,6 @@ MiDispositivoMIDI_V3::MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numberExten
 */
 void MiDispositivoMIDI_V3::readPADs()
 {
-    // TODO habria otra forma de hacer esto. leyendo primera extensiones
-    // y luego ledpad_num. lo que no me gusta mucho es que habria que llamar
-    // mas veces a configure the mux parte.
-
     // iterate all buttons in a pad
     for(int i = 0; i < LEDPAD_NUM; i++)
     {
