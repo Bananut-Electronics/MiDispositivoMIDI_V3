@@ -69,7 +69,6 @@ Hi! We are BanaNut Electronics and we develop software and hardware for Arduino 
 |      LightWand Kosmonaut V2      |  MiDispositivoMIDI V3 |
 |:-------------:|:------:|
 |  <img width="160" height="120" src="https://github.com/Bananut-Electronics/LightWand_Kosmonaut_V2/blob/master/01_Documentation/00_Summary/LWK2_Product_1.png"> | <img width="160" height="120" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/touchpads.JPG?raw=true"> |
-|    ...   |   ... |
 
 </center>
 
