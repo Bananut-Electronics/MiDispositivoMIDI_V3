@@ -41,7 +41,7 @@ uint8_t muxPin[4] = {MUX_B0_PIN,MUX_B1_PIN,MUX_B2_PIN,MUX_B3_PIN};
 
 /*
 * Function:    MiDispositivoMIDI_V3::MiDispositivoMIDI_V3
-* Description: Contructor.
+* Description: Constructor.
 
 * Input:
 *  -numPages          Number of pages [0:MAX_PAGE]

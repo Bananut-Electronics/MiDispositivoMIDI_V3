@@ -36,9 +36,9 @@ void setup() {
   // buttons and 64 RGB leds, it is strongly recommended to not
   // use values greater than 150 for each color. In a 4x4 version
   // they can be up to 255, but in this case, the USB does not have
-  // enought power to light up all leds in more than 150.
+  // enough power to light up all leds in more than 150.
   // If you are not going to have all leds on, you can use 255, but
-  // keep in mind that when the power is not enought, the behaviour
+  // keep in mind that when the power is not enough, the behaviour
   // is unexpected.
 
   // Define your colors when the button is off

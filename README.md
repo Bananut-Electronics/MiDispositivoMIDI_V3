@@ -111,7 +111,7 @@ These are the features of our device:
 * Have 16 pad buttons in a 4x4 matrix.
 * Have 2 lateral buttons.
 * Have RGB leds with 256 levels of intensity of each color.
-* Micro USB conection.
+* Micro USB connection.
 * Dimensions of 10x10 cm.
 * Modular design. Connect up to 4 devices.
 * Fully compatible with Logic, Ableton or Cubase.
