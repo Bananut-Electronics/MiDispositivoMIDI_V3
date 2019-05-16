@@ -19,7 +19,7 @@
 /*
  * Goal: Handle RGB LEDs, understanding that each button have three colors,
  * red, green and blue. Each color can be lighted up with an intensity of
- * 0 to 255. Also understand that LEDs are adressed from 0 to 15, beeing the
+ * 0 to 255. Also understand that LEDs are addressed from 0 to 15, being the
  * first 0 (element 1,1, top left corner) and 15 the last (element 4,4, bottom righ corner)
  * 
  * Exercise proposed: Modify the colors and LEDs.
@@ -49,7 +49,7 @@ void loop() {
   // The second number indicates the color (0 red, 1 green, 2 blue)
 
   // After any change in the ledPad matrix, the function updateLEDS()
-  // shows the changes in the controler.
+  // shows the changes in the controller.
   updateLEDs();
 }
 

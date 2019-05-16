@@ -10,7 +10,7 @@
  * Code:     MDM_V3_NoLibrary_StepSequencer.ino                     *
  * Hardware: Four MiDispositivoMIDI V3 connected in a 4x16 config   *
  * Brief:    This code uses four 4x4 MDM V3 connected in a 4x16     *
- *           configuration to create an step sequencer. If you dont *
+ *           configuration to create an step sequencer. If you don't *
  *           know what that is, we invite you to read about it on   *
  *           the internet. You can also check this video we made    *
  *           with this code here:                                   *
@@ -42,7 +42,7 @@
 // Defined values
 #define LEDPAD_EXT  1    //Number of LED PAD Extension Boards [1:4]
 #define LEDPAD_NUM  16   //LEDs per PAD
-#define PAD_THR     500  //PAD Value Threhold for Action
+#define PAD_THR     500  //PAD Value Threshold for Action
 #define MAX_PAGE    4    //Maximum number of pages. Must be multiple of 4.
 
 // Pad y Multiplexers Pins

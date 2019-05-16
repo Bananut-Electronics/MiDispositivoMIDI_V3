@@ -46,7 +46,7 @@
 // Defined values
 #define LEDPAD_NUM  16   //LEDs per PAD
 #define LEDPAD_EXT  4    //Number of LED PAD Extension Boards [1:4]
-#define PAD_THR     500  //PAD Value Threhold for Action
+#define PAD_THR     500  //PAD Value Threshold for Action
 #define MAX_PAGE    4    //Maximum number of pages.
 #define MIDI_CHANNEL 0   //Default MIDI channel
 
