@@ -10,16 +10,16 @@
 # Methods and Functions (KEYWORD2)
 #######################################
 
-MiDispositivoMIDI_V3  KEYWORD2
-loop  				  KEYWORD2
-initializeLEDs  	  KEYWORD2
-setMidiNotes    	  KEYWORD2
-setMidiVeloc   	  	  KEYWORD2
-setOnColors   	      KEYWORD2
-setOffColors  		  KEYWORD2
-setPixelColor  		  KEYWORD2
-setInterrupt   		  KEYWORD2
-setMidiChannel 		  KEYWORD2
+MiDispositivoMIDI_V3	KEYWORD2
+loop	KEYWORD2
+initializeLEDs	KEYWORD2
+setMidiNotes	KEYWORD2
+setMidiVeloc	KEYWORD2
+setOnColors	KEYWORD2
+setOffColors	KEYWORD2
+setPixelColor	KEYWORD2
+setInterrupt	KEYWORD2
+setMidiChannel	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
