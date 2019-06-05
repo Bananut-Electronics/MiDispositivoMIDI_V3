@@ -179,6 +179,11 @@ We invite you to check our YouTube channel, where we post videos about our devic
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn7.png">
 
 # Contributing
+Feel free to create a pull request with your new feature, we will be pleased to add it to our repo. We can differentiate between three different types of contributions:
+
+* Contributing to the Arduino library: Feel free to add stuff related to our Arduino library in the `src` folder. Note that if you add a new feature to our library, we would love to see also a working example in the `examples` folder using that new functionality. Name if as `MDM_V3_Library_xxx` so that we know that that code uses the library.
+* Contributing with new examples: You can add code inside the `examples` folder. Just remember to name it with `MDM_V3_NoLibrary_xxx` if that code is not using any function provided by the library.
+* Other random stuff: Feel free to add images with your own setup, correct existing code, fix bugs or whatever you have in mind.
 
 ---
 
