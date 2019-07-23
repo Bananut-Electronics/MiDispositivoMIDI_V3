@@ -88,7 +88,7 @@ MiDispositivoMIDI_V3::MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numberExten
 
 /*
 * Function:    MiDispositivoMIDI_V3::readPADs
-* Description: Read all buttons and send midi when pressed
+* Description: Read all buttons and do some actions with them
 
 * Input:
 *  -none
@@ -113,38 +113,104 @@ void MiDispositivoMIDI_V3::readPADs()
         {
             // read the button
             int padRead = analogRead(padPin[j]);
+            PADstatus status = OFF;
 
-            // if lower than threshold, it has been pressed
+            // if lower than threshold, it is pressed
             if (padRead < PAD_THR)
             { 
 
-                // only enter if it was not previously pressed
+                // if not previously pressed it is an ONSET
                 if (_lastRead[j][i] == 0)
                 {
-                    // send note
                     _lastRead[j][i] = 1;
-                    setRgbColors(_onColors, _ledPad[j][i]);
-                    noteOn(_midiChannel,
-                           _numberExtensions == 1 ? _midiNotes[j][i] + _currentPage * LEDPAD_NUM : _midiNotes[j][i],
-                           _midiVeloc[j][i]);
-                    MidiUSB.flush();
+                    status = ONSET;
                 }
+                else  // otherwise it is still beeing pressed
+                {
+                    status = ON;
+                }
+                
             }
             else
             {
-                // if it has been released, send note off
+                // if it has been released, set status to OFFSET
                 if (_lastRead[j][i] == 1)
                 {
                     _lastRead[j][i] = 0;
-                    setRgbColors(_offColors, _ledPad[j][i]);
-                    noteOff(_midiChannel,
-                            _numberExtensions == 1 ? _midiNotes[j][i] + _currentPage * LEDPAD_NUM : _midiNotes[j][i],
-                            0);
-                    MidiUSB.flush();
+                    status = OFFSET;
                 }
             }
-        }  
+
+            if (status != OFF)
+            {
+                PADaction(status, j, i);
+            }
+        }
     }
+}
+
+
+/*
+ * Function:    MiDispositivoMIDI_V3::PADaction
+ * Description: Send MIDI messages and activate LEDs on pressed PADs.
+ *              This method may be overrided to produce cumstom behavior
+ *              (e.g, customize MIDI messages, change the assigned note...).
+
+ * Input:
+ *  -status:    ONSET/ON/OFFSET/OFF according to the status of the PAD.
+ *  -extension: Current extension id.
+ *  -pad:       current PAD id.
+
+ * Output:
+ *  -void
+ */
+void MiDispositivoMIDI_V3::PADaction(PADstatus status , uint8_t extension, uint8_t pad)
+{
+    if (status == ONSET)
+    {
+        setRgbColors(_onColors, _ledPad[extension][pad]);
+    }
+    else if (status == OFFSET)
+    {
+        setRgbColors(_offColors, _ledPad[extension][pad]);
+    }
+    else if (status == ON)
+    {
+        // nothing to do in this case
+        return;
+    }
+
+    note(status,
+         _midiChannel,
+         _numberExtensions == 1 ? _midiNotes[extension][pad] + _currentPage * LEDPAD_NUM : _midiNotes[extension][pad],
+         _midiVeloc[extension][pad]);
+}
+
+
+/*
+ * Function:    MiDispositivoMIDI_V3::note
+ * Description: sends MIDI on/off menssages.
+
+ * Input:
+ *  -status:    ONSET for noteOn and OFFSET of noteOff.
+ *  -channel:   MIDI Channel. Recommended 0.
+ *  -pitch:     Note value, from 0 to 255
+ *  -velocity:  Note intensity, form 0 to 255
+
+ * Output:
+ *  -void
+ */
+void MiDispositivoMIDI_V3::note(PADstatus status, byte channel, byte pitch, byte velocity) {
+    if (status == ONSET)
+    {
+        noteOn(channel, pitch, velocity);
+    }
+    else if (status == OFFSET)
+    {
+        noteOff(channel, pitch, velocity);
+    }
+
+    MidiUSB.flush();
 }
 
 /*
@@ -159,11 +225,11 @@ void MiDispositivoMIDI_V3::readPADs()
  * Output:
  *  -void
  */
+
 void MiDispositivoMIDI_V3::noteOn(byte channel, byte pitch, byte velocity) {
   midiEventPacket_t noteOn = {0x09, uint8_t(0x90 | channel), pitch, velocity};
   MidiUSB.sendMIDI(noteOn);
 }
-
 /*
  * Function:    MiDispositivoMIDI_V3::noteOff
  * Description: Sends a noteOff MIDI message.

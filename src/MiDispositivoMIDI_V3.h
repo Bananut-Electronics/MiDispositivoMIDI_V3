@@ -64,6 +64,8 @@
 #define DEFAULT_PAGE_NUM     0
 #define DEFAULT_VELOCITY     127
 
+enum PADstatus {OFF, ON, ONSET, OFFSET};
+
 class MiDispositivoMIDI_V3
 {
 public: MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numExtensions);
@@ -80,7 +82,7 @@ public: MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numExtensions);
     void setInterrupt(void (* functionPointer)(), double seconds);
     void setMidiChannel(uint8_t midiChannel);
     
-private:
+protected:
     // number of hardware extensions [0:MAX_EXTENSIONS]
     uint8_t _numberExtensions;
 
@@ -119,6 +121,11 @@ private:
 
     void generateNotesVeloc(uint8_t numberOfExtensions);
 
+    void note(PADstatus status,
+              byte channel,
+              byte pitch,
+              byte velocity);
+
     void noteOn(byte channel,
                 byte pitch,
                 byte velocity);
@@ -126,6 +133,8 @@ private:
     void noteOff(byte channel,
                  byte pitch,
                  byte velocity);
+
+    virtual void PADaction(PADstatus status, uint8_t extension, uint8_t pad);
 };
 
 #endif
