@@ -44,19 +44,14 @@ uint8_t muxPin[4] = {MUX_B0_PIN,MUX_B1_PIN,MUX_B2_PIN,MUX_B3_PIN};
 * Description: Constructor.
 
 * Input:
-*  -numPages          Number of pages [0:MAX_PAGE]
 *  -numberExtensions  Number of hardware extensions
 
 * Output:
 *  -void
 */
-MiDispositivoMIDI_V3::MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numberExtensions)
+MiDispositivoMIDI_V3::MiDispositivoMIDI_V3(uint8_t numberExtensions)
 {
-    if (numPages > MAX_PAGE)
-    {
-        //todo: error
-    }
-    _numPages         = numPages;
+    _numPages         = MAX_NUMBER_OF_PAGES;
     _numberExtensions = numberExtensions;
     _currentPage      = DEFAULT_PAGE_NUM;
     _midiChannel      = DEFAULT_MIDI_CHANNEL;
@@ -88,7 +83,7 @@ MiDispositivoMIDI_V3::MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numberExten
 
 /*
 * Function:    MiDispositivoMIDI_V3::readPADs
-* Description: Read all buttons and send midi when pressed
+* Description: Read all buttons and do some actions with them
 
 * Input:
 *  -none
@@ -121,30 +116,88 @@ void MiDispositivoMIDI_V3::readPADs()
                 // only enter if it was not previously pressed
                 if (_lastRead[j][i] == 0)
                 {
-                    // send note
                     _lastRead[j][i] = 1;
-                    setRgbColors(_onColors, _ledPad[j][i]);
-                    noteOn(_midiChannel,
-                           _numberExtensions == 1 ? _midiNotes[j][i] + _currentPage * LEDPAD_NUM : _midiNotes[j][i],
-                           _midiVeloc[j][i]);
-                    MidiUSB.flush();
+                    buttonPressed(j, i);
+                }
+                else
+                {
+                    /* TODO This else can be used to played a bit. It will enter here multiple times
+                    while the button is being pushed */
+                    buttonHolded(j, i);
                 }
             }
             else
             {
-                // if it has been released, send note off
+                // if it has been released
                 if (_lastRead[j][i] == 1)
                 {
                     _lastRead[j][i] = 0;
-                    setRgbColors(_offColors, _ledPad[j][i]);
-                    noteOff(_midiChannel,
-                            _numberExtensions == 1 ? _midiNotes[j][i] + _currentPage * LEDPAD_NUM : _midiNotes[j][i],
-                            0);
-                    MidiUSB.flush();
+                    buttonReleased(j, i);
                 }
             }
         }  
     }
+}
+
+
+/*
+ * Function:    MiDispositivoMIDI_V3::buttonPressed
+ * Description: xxx
+
+ * Input:
+ *  -status:    xxx
+ *  -extension: xxx
+
+ * Output:
+ *  -void
+ */
+void MiDispositivoMIDI_V3::buttonPressed(uint8_t extension, uint8_t pad)
+{
+    setRgbColors(_onColors, _ledPad[extension][pad]);
+    noteOn(_midiChannel,
+           _numberExtensions == 1 ? _midiNotes[extension][pad] + _currentPage * LEDPAD_NUM : _midiNotes[extension][pad],
+           _midiVeloc[extension][pad]);
+
+    MidiUSB.flush();
+}
+
+/*
+ * Function:    MiDispositivoMIDI_V3::buttonReleased
+ * Description: xxx
+
+ * Input:
+ *  -status:    xxx
+ *  -extension: xxx
+
+ * Output:
+ *  -void
+ */
+void MiDispositivoMIDI_V3::buttonReleased(uint8_t extension, uint8_t pad)
+{
+    setRgbColors(_offColors, _ledPad[extension][pad]);
+    noteOff(_midiChannel,
+            _numberExtensions == 1 ? _midiNotes[extension][pad] + _currentPage * LEDPAD_NUM : _midiNotes[extension][pad],
+            _midiVeloc[extension][pad]);
+
+    MidiUSB.flush();
+}
+
+/*
+ * Function:    MiDispositivoMIDI_V3::buttonHolded
+ * Description: xxx
+
+ * Input:
+ *  -status:    xxx
+ *  -extension: xxx
+
+ * Output:
+ *  -void
+ */
+void MiDispositivoMIDI_V3::buttonHolded(uint8_t extension, uint8_t pad)
+{
+    _ledPad[extension][pad][0] > 1 ? _ledPad[extension][pad][0]-- : _ledPad[extension][pad][0] = DEFAULT_ON_RED;
+    _ledPad[extension][pad][1] > 1 ? _ledPad[extension][pad][1]-- : _ledPad[extension][pad][1] = DEFAULT_ON_GREEN;
+    _ledPad[extension][pad][2] > 1 ? _ledPad[extension][pad][2]-- : _ledPad[extension][pad][2] = DEFAULT_ON_BLUE;
 }
 
 /*
@@ -159,11 +212,12 @@ void MiDispositivoMIDI_V3::readPADs()
  * Output:
  *  -void
  */
-void MiDispositivoMIDI_V3::noteOn(byte channel, byte pitch, byte velocity) {
+
+void MiDispositivoMIDI_V3::noteOn(byte channel, byte pitch, byte velocity)
+{
   midiEventPacket_t noteOn = {0x09, uint8_t(0x90 | channel), pitch, velocity};
   MidiUSB.sendMIDI(noteOn);
 }
-
 /*
  * Function:    MiDispositivoMIDI_V3::noteOff
  * Description: Sends a noteOff MIDI message.
@@ -176,7 +230,8 @@ void MiDispositivoMIDI_V3::noteOn(byte channel, byte pitch, byte velocity) {
  * Output:
  *  -void
  */
-void MiDispositivoMIDI_V3::noteOff(byte channel, byte pitch, byte velocity) {
+void MiDispositivoMIDI_V3::noteOff(byte channel, byte pitch, byte velocity)
+{
   midiEventPacket_t noteOff = {0x08, uint8_t(0x80 | channel), pitch, velocity};
   MidiUSB.sendMIDI(noteOff);
 }
@@ -217,7 +272,8 @@ void MiDispositivoMIDI_V3::updateLEDs()
 * Output:
 *  -void
 */
-void MiDispositivoMIDI_V3::readPage(){
+void MiDispositivoMIDI_V3::readPage()
+{
     uint8_t readSW_1 = digitalRead(SW_0_PIN);
     uint8_t readSW_2 = digitalRead(SW_1_PIN);
     if ((readSW_1 == HIGH) && (readSW_1 != lastSwitchRead[0]))

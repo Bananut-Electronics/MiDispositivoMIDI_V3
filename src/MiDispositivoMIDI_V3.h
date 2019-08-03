@@ -47,7 +47,6 @@
 #define RGB_COLORS     3
 #define LEDPAD_NUM     16
 #define PAD_THR        500
-#define MAX_PAGE       4
 #define MAX_EXTENSIONS 4
 #define MUX_DELAY      50
 #define USEC_IN_SEC    1000000
@@ -63,10 +62,11 @@
 #define DEFAULT_OFF_BLUE     255
 #define DEFAULT_PAGE_NUM     0
 #define DEFAULT_VELOCITY     127
+#define MAX_NUMBER_OF_PAGES  4
 
 class MiDispositivoMIDI_V3
 {
-public: MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numExtensions);
+public: MiDispositivoMIDI_V3(uint8_t numExtensions);
     
     void loop();
     void initializeLEDs();
@@ -80,11 +80,11 @@ public: MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numExtensions);
     void setInterrupt(void (* functionPointer)(), double seconds);
     void setMidiChannel(uint8_t midiChannel);
     
-private:
+protected:
     // number of hardware extensions [0:MAX_EXTENSIONS]
     uint8_t _numberExtensions;
 
-    // number of pages [0:MAX_PAGE]
+    // number of pages
     uint8_t _numPages;
 
     // color per led for all the device
@@ -126,6 +126,10 @@ private:
     void noteOff(byte channel,
                  byte pitch,
                  byte velocity);
+
+    virtual void buttonPressed(uint8_t extension, uint8_t pad);
+    virtual void buttonReleased(uint8_t extension, uint8_t pad);
+    virtual void buttonHolded(uint8_t extension, uint8_t pad);
 };
 
 #endif
