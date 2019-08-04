@@ -1,5 +1,7 @@
 <h1 align="center"> ⭐️ MiDispositivoMIDI V3 ⭐️ </h1>
 
+[![Build Status](https://travis-ci.org/Bananut-Electronics/MiDispositivoMIDI_V3.svg?branch=master)](https://travis-ci.org/Bananut-Electronics/MiDispositivoMIDI_V3)
+
 <p align="center">
   <a href="www.facebook.com/bananutelectronics">
     <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/mdmv3_gif.gif">
