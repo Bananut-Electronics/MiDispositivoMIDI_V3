@@ -50,11 +50,11 @@
 
 <p align="center">
   <a href="#about-us">About us</a> •
-  <a href="#history">History</a> •
   <a href="#midispositivomidi-v3">MiDispositivoMIDI V3</a> •
   <a href="#expansions">Expansions</a> •
   <a href="#documentation">Documentation</a> •
   <a href="#media">Media</a> •
+  <a href="#faq">FAQ</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#license">License</a>
 </p>
@@ -76,10 +76,6 @@ Hi! We are BanaNut Electronics and we develop software and hardware for Arduino 
 
 ---
 
-
-<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn2.png">
-
-# History
 Everything started with the first version at the Polytechnical University of Madrid (UPM) in 2013. We were a couple of young students interested in music and electronics, and we came up with this idea. We started reusing some hardware, mainly found at SparkFun's website, but only one year later, we had the second version that was fully designed by us. After some trial and error and feedback from users and friends, we released this third version V3 in 2017. We not only released the code, but also we started producing devices and selling them on the internet, first in our web and later on at Tindie.com store.
 
 During the years, the different versions of MiDispositivoMIDI have been used by many people, engineers, musicians and even kids. We gave some workshops at UPM Madrid for students in Electrical and Telecommunications Engineering, where we gave all the materials and the students had to solder, assembly and code the device.
@@ -175,6 +171,18 @@ We invite you to check our YouTube channel, where we post videos about our devic
 * https://www.youtube.com/watch?v=8WFfShg-0Dk
 * https://www.youtube.com/watch?v=2y8fhmTmedI
 * https://www.youtube.com/watch?v=TsuVpFoLFyI
+
+---
+
+<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn2.png">
+
+# FAQ
+
+Feel free to send us a mail to bananutelectronics@gmail.com if you have any question, but read before our FAQ since there are some common issues that can be fixed quite easily:
+
+* **I can't load code to my device. Why?** Make sure that in the Arduino IDE boards section (Tool->Boards) you have selected "Arduino Leonardo"
+* **I was playing with some code, and now the device is gone form the serial port list. Why?** If you were playing with some experimental code, you might have screwed up the "operative system" of the Arduino. But no worries, the fix is pretty straightforward. Open an example from the basic library (i.e. Examples->Basics-Blink) and hit the "Upload" button. You will first see that it is "Compiling" and that that is "Loading". Click the reset button right after "Compiling" is finished. With this you should get the bootloader running and you will be able to load the code. After this, you should be able to see the device in the serial port list as usual. Note that the reset button is the one on the top (not the ones on the left).
+
 
 ---
 
