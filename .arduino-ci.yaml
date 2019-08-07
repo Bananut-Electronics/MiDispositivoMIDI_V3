@@ -1,9 +1,19 @@
 compile:
-  libraries: ~
+  libraries:
+    #- "../MiDispositivoMIDI_V3" dont know if navigation to path is needed
+    - "MiDispositivoMIDI_V3"
+    - "Adafruit_NeoPixel"
+    - "MIDIUSB"
+    - "TimerOne"
   platforms:
     - leonardo
 
 unittest:
-  libraries: ~
+  libraries:
+    #- "../MiDispositivoMIDI_V3" dont know if navigation to path is needed
+    - "MiDispositivoMIDI_V3"
+    - "Adafruit_NeoPixel"
+    - "MIDIUSB"
+    - "TimerOne"
   platforms:
     - leonardo
