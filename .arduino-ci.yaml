@@ -1,7 +1,7 @@
 compile:
   libraries:
     #- "../MiDispositivoMIDI_V3" dont know if navigation to path is needed
-    - "MiDispositivoMIDI_V3"
+    #- "MiDispositivoMIDI_V3"
     - "Adafruit_NeoPixel"
     - "MIDIUSB"
     - "TimerOne"
@@ -11,7 +11,7 @@ compile:
 unittest:
   libraries:
     #- "../MiDispositivoMIDI_V3" dont know if navigation to path is needed
-    - "MiDispositivoMIDI_V3"
+    #- "MiDispositivoMIDI_V3"
     - "Adafruit_NeoPixel"
     - "MIDIUSB"
     - "TimerOne"
