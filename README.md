@@ -51,9 +51,8 @@
 <p align="center">
   <a href="#about-us">About us</a> •
   <a href="#midispositivomidi-v3">MiDispositivoMIDI V3</a> •
-  <a href="#expansions">Expansions</a> •
   <a href="#documentation">Documentation</a> •
-  <a href="#media">Media</a> •
+  <a href="#expansions">Expansions</a> •
   <a href="#faq">FAQ</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#license">License</a>
@@ -118,13 +117,29 @@ These are the features of our device:
 <img width="400" height="225" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_4By4_GIF.gif">  <img width="350" height="225" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_4By4_PIC1.jpg">
 </a>
 
+We invite you to check our YouTube channel, where we post videos about our devices. You can also follow other social networks such as Instagram o Facebook.
+
+* https://www.youtube.com/watch?v=3QnzLwpbpRE&t
+* https://www.youtube.com/watch?v=8WFfShg-0Dk
+* https://www.youtube.com/watch?v=2y8fhmTmedI
+* https://www.youtube.com/watch?v=TsuVpFoLFyI
+
+---
+
+<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn5.png">
+
+# Documentation
+
+We provide a C++ Arduino library that you can use with our device, that simplifies the tasks of handling the LEDs and buttons. The code is self documented, but we have also written a nice Wiki page where you can find more information about the hardware, some hints about MIDI protocol and some low level software examples in Arduino, that will allow you to understand how it works:
+* Wiki: https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/wiki
+
 ---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn4.png">
 
 # Expansions
 
-Our device has a modular design, which means that with the same hardware, you can keep adding modules to convert it into a bigger controller. For example, if you put four MiDispositivoMIDI V3 into a 8x8 configuration, you will have 64 buttons. All this can be done using the same hardware and with very few modificatons in the code. Note that you can also replace a 4x4 button matrix by a 4x4 potentiometer matrix, but this feature is not implemented yet.
+Our device has a modular design, which means that with the same hardware, you can add modules to convert it into a bigger controller. For example, if you put four MiDispositivoMIDI V3 into a 8x8 configuration, you will have 64 buttons. All this can be done using the same hardware and with very few modificatons in the code. Note that you can also replace a 4x4 button matrix by a 4x4 potentiometer matrix, but this feature is not implemented yet.
 
 <p align="center">
 <a href="www.facebook.com/bananutelectronics">
@@ -150,27 +165,8 @@ Same as before, you can connect the devices with a different configuration. Note
 ## 4x8 Configuration
 TODO
 
----
-
-<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn5.png">
-
-# Documentation
-
-We provide a C++ Arduino library that you can use with our device, that simplifies the tasks of handling the LEDs and buttons. The code is self documented, but we have also written a nice Wiki page where you can find more information about the hardware, some hints about MIDI protocol and some low level software examples in Arduino, that will allow you to understand how it works:
-* Wiki: https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/wiki
-
----
-
-<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn6.png">
-
-# Media
-
-We invite you to check our YouTube channel, where we post videos about our devices. You can also follow other social networks such as Instagram o Facebook.
-
-* https://www.youtube.com/watch?v=3QnzLwpbpRE&t
-* https://www.youtube.com/watch?v=8WFfShg-0Dk
-* https://www.youtube.com/watch?v=2y8fhmTmedI
-* https://www.youtube.com/watch?v=TsuVpFoLFyI
+## Potentiometer Expansion
+TODO
 
 ---
 
