@@ -133,6 +133,11 @@ We invite you to check our YouTube channel, where we post videos about our devic
 We provide a C++ Arduino library that you can use with our device, that simplifies the tasks of handling the LEDs and buttons. The code is self documented, but we have also written a nice Wiki page where you can find more information about the hardware, some hints about MIDI protocol and some low level software examples in Arduino, that will allow you to understand how it works:
 * Wiki: https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/wiki
 
+TODO: Write some nice code snippets
+```cpp
+//TODO
+```
+
 ---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn4.png">
