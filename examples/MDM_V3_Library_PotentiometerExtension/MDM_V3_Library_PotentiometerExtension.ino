@@ -7,23 +7,25 @@
  * See license and documentation in the repository.                 *
  * https://github.com/bananut-electronics                           *
  *                                                                  *
- * Code:     MDM_V3_Library_ConfigureColors.ino                     *
- * Hardware: One MiDispositivoMIDI V3 4x4                           *
- * Brief:    This code allows you to configure which color each     *
- *           LED will have when pressed and not pressed. For        *
- *           example, if you set the onColor to RED, when you press *
- *           that button, that LED will light up in RED. Note that  *
- *           the colors is given by a RGB array, with [0..255]      *
+ * Code:     MDM_V3_Library_PotentiometerExtension.ino              *
+ * Hardware: One MiDispositivoMIDI V3 4x4 and one 4xe potentiometer *                          
+ *           extension.                                             *
+ * Brief:    This code configures an extension board with .         *
+ *           potentiometers                                         *
  *                                                                  *
  ********************************************************************/
 
 // Include the library
 #include <MiDispositivoMIDI_V3.h>
 
-BoardRoles bRoles[1] = {TOUCHPAD};
-MiDispositivoMIDI_V3 mdm = MiDispositivoMIDI_V3(SINGLE_DEVICE_4X4, bRoles);
+// Create a mdm with 4 pages and only 1 expansion
+BoardRoles bRoles[2] = {TOUCHPAD, POTENTIOMETER};
+MiDispositivoMIDI_V3 mdm = MiDispositivoMIDI_V3(TWO_DEVICES_4X8, bRoles);
 
 void setup() {
+
+  Serial.begin(9600);
+
   // Configure the colors when the LED is not pressed
   uint8_t offColors[3] = {255, 0, 0};
   mdm.setOffColors( offColors );

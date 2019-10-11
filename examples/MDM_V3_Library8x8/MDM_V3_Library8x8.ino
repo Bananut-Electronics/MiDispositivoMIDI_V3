@@ -22,8 +22,8 @@
 // Include the library
 #include <MiDispositivoMIDI_V3.h>
 
-// Creates a MDM with 1 page and 4 expansions
-MiDispositivoMIDI_V3 mdm = MiDispositivoMIDI_V3(1, 4);
+BoardRoles bRoles[4] = {TOUCHPAD, TOUCHPAD, TOUCHPAD, TOUCHPAD};
+MiDispositivoMIDI_V3 mdm = MiDispositivoMIDI_V3(FOUR_DEVICES_8X8, bRoles);
 
 // Couple of variables for the led animation
 int buttonCounter    = 0;
