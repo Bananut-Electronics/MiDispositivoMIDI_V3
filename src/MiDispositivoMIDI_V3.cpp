@@ -199,11 +199,13 @@ void MiDispositivoMIDI_V3::readPADs()
 
 /*
  * Function:    MiDispositivoMIDI_V3::buttonPressed
- * Description: xxx
+ * Description: Callback function when a button is pressed. It enters
+ *              only once when the action happens. This function is
+ *              only applicable when the extension is a pad one.
 
  * Input:
- *  -extension:  xxx
- *  -pad:        xxx
+ *  -extension:  Extension that was pressed [0..3]
+ *  -pad:        Pad that was pressed [0..15]
 
  * Output:
  *  -void
@@ -220,11 +222,12 @@ void MiDispositivoMIDI_V3::buttonPressed(uint8_t extension, uint8_t pad)
 
 /*
  * Function:    MiDispositivoMIDI_V3::buttonReleased
- * Description: xxx
+ * Description: Callback function when a button is released. This function is
+ *              only applicable when the extension is a pad one.
 
  * Input:
- *  -extension:  xxx
- *  -pad:        xxx
+ *  -extension:  Extension that was pressed [0..3]
+ *  -pad:        Pad that was pressed [0..15]
 
  * Output:
  *  -void
@@ -241,29 +244,34 @@ void MiDispositivoMIDI_V3::buttonReleased(uint8_t extension, uint8_t pad)
 
 /*
  * Function:    MiDispositivoMIDI_V3::buttonHolded
- * Description: xxx
+ * Description: Callback function when the button is holded. This function
+ *              is called while the button is holded on. This function is
+ *              only applicable when the extension is a pad one.
 
  * Input:
- *  -extension:  xxx
- *  -pad:        xxx
+ *  -extension:  Extension that was pressed [0..3]
+ *  -pad:        Pad that was pressed [0..15]
 
  * Output:
  *  -void
  */
 void MiDispositivoMIDI_V3::buttonHolded(uint8_t extension, uint8_t pad)
 {
+  /* Do some stuff. Feel free to inherit this function and set up your own callback
     _ledColors[extension][pad][0] > 1 ? _ledColors[extension][pad][0]-- : _ledColors[extension][pad][0] = DEFAULT_ON_RED;
     _ledColors[extension][pad][1] > 1 ? _ledColors[extension][pad][1]-- : _ledColors[extension][pad][1] = DEFAULT_ON_GREEN;
     _ledColors[extension][pad][2] > 1 ? _ledColors[extension][pad][2]-- : _ledColors[extension][pad][2] = DEFAULT_ON_BLUE;
+  */
 }
 
 /*
  * Function:    MiDispositivoMIDI_V3::potentiometerMoved
- * Description: xxx
+ * Description: Callback function when a potentiometer is moved. This function is
+ *              only applicable when the extension is a potentiometer one.
 
  * Input:
- *  -extension: xxx
- *  -pad:       xxx
+ *  -extension:  Extension that was pressed [0..3]
+ *  -pad:        Pad that was pressed [0..15]
 
  * Output:
  *  -void
