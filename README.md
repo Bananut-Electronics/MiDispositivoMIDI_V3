@@ -183,7 +183,7 @@ Feel free to send us a mail to bananutelectronics@gmail.com if you have any ques
 
 * **I can't load code to my device. Why?** Make sure that in the Arduino IDE boards section (Tool->Boards) you have selected "Arduino Leonardo"
 * **I was playing with some code, and now the device is gone form the serial port list. Why?** If you were playing with some experimental code, you might have screwed up the "operative system" of the Arduino. But no worries, the fix is pretty straightforward. Open an example from the basic library (i.e. Examples->Basics-Blink) and hit the "Upload" button. You will first see that it is "Compiling" and that that is "Loading". Click the reset button right after "Compiling" is finished. With this you should get the bootloader running and you will be able to load the code. After this, you should be able to see the device in the serial port list as usual. Note that the reset button is the one on the top (not the ones on the left).
-
+* **When I press a button, the LED takes a bit to light up, why?** There should not be any delay when you press a button, so right after pressing the pad, you should see that it lights up (assuming of course that it configured to do so). If this delay is present, please, make sure that you have a MIDI program reading the port in your computer.
 
 ---
 
