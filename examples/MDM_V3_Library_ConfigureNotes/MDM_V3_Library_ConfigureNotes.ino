@@ -19,7 +19,8 @@
 #include <MiDispositivoMIDI_V3.h>
 
 // Creates a mdm with four pages and only one expansion
-MiDispositivoMIDI_V3 mdm = MiDispositivoMIDI_V3(4, 1);
+BoardRoles bRoles[1] = {TOUCHPAD};
+MiDispositivoMIDI_V3 mdm = MiDispositivoMIDI_V3(SINGLE_DEVICE_4X4, bRoles);
 
 void setup() {
 

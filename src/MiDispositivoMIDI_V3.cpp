@@ -44,22 +44,52 @@ uint8_t muxPin[4] = {MUX_B0_PIN,MUX_B1_PIN,MUX_B2_PIN,MUX_B3_PIN};
 * Description: Constructor.
 
 * Input:
-*  -numPages          Number of pages [0:MAX_PAGE]
-*  -numberExtensions  Number of hardware extensions
+*  -hwConfig  Hardware configuration. If only one board is used, use
+              SINGLE_DEVICE_4X4. If you have more than one board connected,
+              choose a configuration accordingly
+*  -bRoles    Type of each board. Choose between POTENTIOMETER and TOUCHPAD.
 
 * Output:
 *  -void
 */
-MiDispositivoMIDI_V3::MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numberExtensions)
+MiDispositivoMIDI_V3::MiDispositivoMIDI_V3(HardwareConfigurations hwConfig, BoardRoles bRoles[MAX_EXTENSIONS])
 {
-    if (numPages > MAX_PAGE)
+    _currentPage = DEFAULT_PAGE_NUM;
+    _hwConfig    = hwConfig;
+
+    switch (hwConfig)
     {
-        //todo: error
+        case SINGLE_DEVICE_4X4:
+            _numberExtensions = 1;
+            _numOfRows = 4;
+            _numOfCols = 4;
+            break;
+        case TWO_DEVICES_4X8:
+            _numberExtensions = 2;
+            _numOfRows = 4;
+            _numOfCols = 8;
+            break;
+        case THREE_DEVICES_4X12:
+            _numberExtensions = 3;
+            _numOfRows = 4;
+            _numOfCols = 12;
+            break;
+        case FOUR_DEVICES_4X16:
+            _numberExtensions = 4;
+            _numOfRows = 4;
+            _numOfCols = 16;
+            break;
+        case FOUR_DEVICES_8X8:
+            _numberExtensions = 4;
+            _numOfRows = 8;
+            _numOfCols = 8;
+            break;
     }
-    _numPages         = numPages;
-    _numberExtensions = numberExtensions;
-    _currentPage      = DEFAULT_PAGE_NUM;
-    _midiChannel      = DEFAULT_MIDI_CHANNEL;
+
+    for (uint8_t i = 0; i < _numberExtensions; i++)
+    {
+      _bRoles[i] = bRoles[i];
+    }
 
     // set some on/off colors by default
     uint8_t on[RGB_COLORS]  = {DEFAULT_ON_RED, DEFAULT_ON_GREEN, DEFAULT_ON_BLUE};
@@ -76,14 +106,29 @@ MiDispositivoMIDI_V3::MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numberExten
     pinMode(SW_1_PIN, INPUT);
 
     // init led strip
-    ledPadStripe = Adafruit_NeoPixel(LEDPAD_NUM * numberExtensions, LEDPAD_PIN, NEO_RGB + NEO_KHZ800);
+    ledPadStripe = Adafruit_NeoPixel(LEDPAD_NUM * _numberExtensions, LEDPAD_PIN, NEO_RGB + NEO_KHZ800);
     ledPadStripe.begin();
     
     // set all leds to off color
     initializeLEDs();
 
     // generate which notes each button will send
-    generateNotesVeloc(numberExtensions);
+    generateNotesVeloc(_numberExtensions);
+}
+
+/*
+* Function:    MiDispositivoMIDI_V3::~MiDispositivoMIDI_V3
+* Description: Destructor.
+
+* Input:
+*  -none
+
+* Output:
+*  -void
+*/
+MiDispositivoMIDI_V3::~MiDispositivoMIDI_V3()
+{
+
 }
 
 /*
@@ -113,104 +158,138 @@ void MiDispositivoMIDI_V3::readPADs()
         {
             // read the button
             int padRead = analogRead(padPin[j]);
-            PADstatus status = OFF;
 
-            // if lower than threshold, it is pressed
-            if (padRead < PAD_THR)
-            { 
-
-                // if not previously pressed it is an ONSET
-                if (_lastRead[j][i] == 0)
-                {
-                    _lastRead[j][i] = 1;
-                    status = ONSET;
-                }
-                else  // otherwise it is still beeing pressed
-                {
-                    status = ON;
-                }
-                
-            }
-            else
+            // If j extension is a TOUCHPAD matrix
+            if (_bRoles[j] == TOUCHPAD)
             {
-                // if it has been released, set status to OFFSET
-                if (_lastRead[j][i] == 1)
-                {
-                    _lastRead[j][i] = 0;
-                    status = OFFSET;
-                }
+              // if lower than threshold, it has been pressed
+              if (padRead < PAD_THR)
+              { 
+                  // only enter if it was not previously pressed
+                  if (_lastRead[j][i] == 0)
+                  {
+                      _lastRead[j][i] = 1;
+                      buttonPressed(j, i);
+                  }
+                  else
+                  {
+                      buttonHolded(j, i);
+                  }
+              }
+              else
+              {
+                  // if it has been released
+                  if (_lastRead[j][i] == 1)
+                  {
+                      _lastRead[j][i] = 0;
+                      buttonReleased(j, i);
+                  }
+              }
+              
             }
-
-            if (status != OFF)
+            // If j extension is a POTENTIOMETER matrix
+            else if (_bRoles[j] == POTENTIOMETER)
             {
-                PADaction(status, j, i);
+              potentiometerMoved(j, i, padRead);
             }
-        }
+        }  
     }
 }
 
 
 /*
- * Function:    MiDispositivoMIDI_V3::PADaction
- * Description: Send MIDI messages and activate LEDs on pressed PADs.
- *              This method may be overrided to produce cumstom behavior
- *              (e.g, customize MIDI messages, change the assigned note...).
+ * Function:    MiDispositivoMIDI_V3::buttonPressed
+ * Description: Callback function when a button is pressed. It enters
+ *              only once when the action happens. This function is
+ *              only applicable when the extension is a pad one.
 
  * Input:
- *  -status:    ONSET/ON/OFFSET/OFF according to the status of the PAD.
- *  -extension: Current extension id.
- *  -pad:       current PAD id.
+ *  -extension:  Extension that was pressed [0..3]
+ *  -pad:        Pad that was pressed [0..15]
 
  * Output:
  *  -void
  */
-void MiDispositivoMIDI_V3::PADaction(PADstatus status , uint8_t extension, uint8_t pad)
+void MiDispositivoMIDI_V3::buttonPressed(uint8_t extension, uint8_t pad)
 {
-    if (status == ONSET)
-    {
-        setRgbColors(_onColors, _ledPad[extension][pad]);
-    }
-    else if (status == OFFSET)
-    {
-        setRgbColors(_offColors, _ledPad[extension][pad]);
-    }
-    else if (status == ON)
-    {
-        // nothing to do in this case
-        return;
-    }
-
-    note(status,
-         _midiChannel,
-         _numberExtensions == 1 ? _midiNotes[extension][pad] + _currentPage * LEDPAD_NUM : _midiNotes[extension][pad],
-         _midiVeloc[extension][pad]);
-}
-
-
-/*
- * Function:    MiDispositivoMIDI_V3::note
- * Description: sends MIDI on/off menssages.
-
- * Input:
- *  -status:    ONSET for noteOn and OFFSET of noteOff.
- *  -channel:   MIDI Channel. Recommended 0.
- *  -pitch:     Note value, from 0 to 255
- *  -velocity:  Note intensity, form 0 to 255
-
- * Output:
- *  -void
- */
-void MiDispositivoMIDI_V3::note(PADstatus status, byte channel, byte pitch, byte velocity) {
-    if (status == ONSET)
-    {
-        noteOn(channel, pitch, velocity);
-    }
-    else if (status == OFFSET)
-    {
-        noteOff(channel, pitch, velocity);
-    }
+    setRgbColors(_onColors, _ledColors[extension][pad]);
+    noteOn(DEFAULT_MIDI_CHANNEL,
+           _numberExtensions == 1 ? _midiNotes[extension][pad] + _currentPage * LEDPAD_NUM : _midiNotes[extension][pad],
+           _midiVeloc[extension][pad]);
 
     MidiUSB.flush();
+}
+
+/*
+ * Function:    MiDispositivoMIDI_V3::buttonReleased
+ * Description: Callback function when a button is released. This function is
+ *              only applicable when the extension is a pad one.
+
+ * Input:
+ *  -extension:  Extension that was pressed [0..3]
+ *  -pad:        Pad that was pressed [0..15]
+
+ * Output:
+ *  -void
+ */
+void MiDispositivoMIDI_V3::buttonReleased(uint8_t extension, uint8_t pad)
+{
+    setRgbColors(_offColors, _ledColors[extension][pad]);
+    noteOff(DEFAULT_MIDI_CHANNEL,
+            _numberExtensions == 1 ? _midiNotes[extension][pad] + _currentPage * LEDPAD_NUM : _midiNotes[extension][pad],
+            _midiVeloc[extension][pad]);
+
+    MidiUSB.flush();
+}
+
+/*
+ * Function:    MiDispositivoMIDI_V3::buttonHolded
+ * Description: Callback function when the button is holded. This function
+ *              is called while the button is holded on. This function is
+ *              only applicable when the extension is a pad one.
+
+ * Input:
+ *  -extension:  Extension that was pressed [0..3]
+ *  -pad:        Pad that was pressed [0..15]
+
+ * Output:
+ *  -void
+ */
+void MiDispositivoMIDI_V3::buttonHolded(uint8_t extension, uint8_t pad)
+{
+  /* Do some stuff. Feel free to inherit this function and set up your own callback
+    _ledColors[extension][pad][0] > 1 ? _ledColors[extension][pad][0]-- : _ledColors[extension][pad][0] = DEFAULT_ON_RED;
+    _ledColors[extension][pad][1] > 1 ? _ledColors[extension][pad][1]-- : _ledColors[extension][pad][1] = DEFAULT_ON_GREEN;
+    _ledColors[extension][pad][2] > 1 ? _ledColors[extension][pad][2]-- : _ledColors[extension][pad][2] = DEFAULT_ON_BLUE;
+  */
+}
+
+/*
+ * Function:    MiDispositivoMIDI_V3::potentiometerMoved
+ * Description: Callback function when a potentiometer is moved. This function is
+ *              only applicable when the extension is a potentiometer one.
+
+ * Input:
+ *  -extension:  Extension that was pressed [0..3]
+ *  -pad:        Pad that was pressed [0..15]
+
+ * Output:
+ *  -void
+ */
+void MiDispositivoMIDI_V3::potentiometerMoved(uint8_t extension, uint8_t pad, int value)
+{
+  /* TODO This is not tested with hardware yet
+    noteOn(DEFAULT_MIDI_CHANNEL,
+           _midiNotes[extension][pad],
+           (value/1023) * 127);*/
+    if (extension == 1)
+    {
+      if (pad == 0)
+      {
+        Serial.println(value);
+      }
+    }
+    //MidiUSB.flush();
 }
 
 /*
@@ -226,7 +305,8 @@ void MiDispositivoMIDI_V3::note(PADstatus status, byte channel, byte pitch, byte
  *  -void
  */
 
-void MiDispositivoMIDI_V3::noteOn(byte channel, byte pitch, byte velocity) {
+void MiDispositivoMIDI_V3::noteOn(byte channel, byte pitch, byte velocity)
+{
   midiEventPacket_t noteOn = {0x09, uint8_t(0x90 | channel), pitch, velocity};
   MidiUSB.sendMIDI(noteOn);
 }
@@ -242,7 +322,8 @@ void MiDispositivoMIDI_V3::noteOn(byte channel, byte pitch, byte velocity) {
  * Output:
  *  -void
  */
-void MiDispositivoMIDI_V3::noteOff(byte channel, byte pitch, byte velocity) {
+void MiDispositivoMIDI_V3::noteOff(byte channel, byte pitch, byte velocity)
+{
   midiEventPacket_t noteOff = {0x08, uint8_t(0x80 | channel), pitch, velocity};
   MidiUSB.sendMIDI(noteOff);
 }
@@ -264,9 +345,9 @@ void MiDispositivoMIDI_V3::updateLEDs()
         for(int j = 0; j < _numberExtensions; j++)
         {
             ledPadStripe.setPixelColor((i+(j*LEDPAD_NUM)),
-                                        _ledPad[j][i][1],
-                                        _ledPad[j][i][0],
-                                        _ledPad[j][i][2]);
+                                        _ledColors[j][i][1],
+                                        _ledColors[j][i][0],
+                                        _ledColors[j][i][2]);
         }
     }
     ledPadStripe.show();
@@ -283,12 +364,13 @@ void MiDispositivoMIDI_V3::updateLEDs()
 * Output:
 *  -void
 */
-void MiDispositivoMIDI_V3::readPage(){
+void MiDispositivoMIDI_V3::readPage()
+{
     uint8_t readSW_1 = digitalRead(SW_0_PIN);
     uint8_t readSW_2 = digitalRead(SW_1_PIN);
     if ((readSW_1 == HIGH) && (readSW_1 != lastSwitchRead[0]))
     {
-        if (_currentPage < (_numPages - 1))
+        if (_currentPage < (MAX_NUMBER_OF_PAGES - 1))
         {
             _currentPage++;
         }
@@ -320,7 +402,7 @@ void MiDispositivoMIDI_V3::initializeLEDs()
     { 
         for(int j = 0; j < _numberExtensions; j++)
         {
-            setRgbColors(_offColors, _ledPad[j][i]);
+            setRgbColors(_offColors, _ledColors[j][i]);
         }
     }
 }
@@ -336,7 +418,7 @@ void MiDispositivoMIDI_V3::initializeLEDs()
 * Output:
 *  -void
 */
-void MiDispositivoMIDI_V3::setMidiNotes(uint8_t notes[][LEDPAD_NUM])
+void MiDispositivoMIDI_V3::setMidiNotes(uint8_t notes[MAX_EXTENSIONS][LEDPAD_NUM])
 {
     for (int i = 0; i < LEDPAD_NUM; i++)
     {
@@ -359,11 +441,11 @@ void MiDispositivoMIDI_V3::setMidiNotes(uint8_t notes[][LEDPAD_NUM])
 * Output:
 *  -void
 */
-void MiDispositivoMIDI_V3::setMidiVeloc(uint8_t veloc[][LEDPAD_NUM])
+void MiDispositivoMIDI_V3::setMidiVeloc(uint8_t veloc[MAX_EXTENSIONS][LEDPAD_NUM])
 {
-    for (int i = 0; i < LEDPAD_NUM; i++)
+    for (uint8_t i = 0; i < LEDPAD_NUM; i++)
     {
-        for (int j = 0; j < _numberExtensions; j++)
+        for (uint8_t j = 0; j < _numberExtensions; j++)
         {
              _midiVeloc[j][i] = veloc[j][i];
         }
@@ -439,7 +521,7 @@ void MiDispositivoMIDI_V3::setInterrupt(void (* functionPointer)(), double secon
 */
 void MiDispositivoMIDI_V3::setPixelColor(uint8_t extension, uint8_t led, uint8_t color[RGB_COLORS])
 {
-    setRgbColors(color, _ledPad[extension][led]);
+    setRgbColors(color, _ledColors[extension][led]);
 }
 
 /*
@@ -479,21 +561,6 @@ void MiDispositivoMIDI_V3::setRgbColors(uint8_t copyFrom[RGB_COLORS], uint8_t co
     {
         copyTo[i] = copyFrom[i];
     }
-}
-
-/*
-* Function:    MiDispositivoMIDI_V3::setMidiChannel
-* Description: Sets a midi channel to be used when sending midi
-
-* Input:
-*  -midiChannel  Midi channel to be used [0:15]
-
-* Output:
-*  -void
-*/
-void MiDispositivoMIDI_V3::setMidiChannel(uint8_t midiChannel)
-{
-    _midiChannel = midiChannel;
 }
 
 /*

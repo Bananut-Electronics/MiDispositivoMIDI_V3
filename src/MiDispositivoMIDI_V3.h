@@ -47,7 +47,6 @@
 #define RGB_COLORS     3
 #define LEDPAD_NUM     16
 #define PAD_THR        500
-#define MAX_PAGE       4
 #define MAX_EXTENSIONS 4
 #define MUX_DELAY      50
 #define USEC_IN_SEC    1000000
@@ -63,43 +62,69 @@
 #define DEFAULT_OFF_BLUE     255
 #define DEFAULT_PAGE_NUM     0
 #define DEFAULT_VELOCITY     127
+#define MAX_NUMBER_OF_PAGES  4
 
-enum PADstatus {OFF, ON, ONSET, OFFSET};
+enum HardwareConfigurations
+{
+  SINGLE_DEVICE_4X4,
+  TWO_DEVICES_4X8,
+  THREE_DEVICES_4X12,
+  FOUR_DEVICES_4X16,
+  FOUR_DEVICES_8X8
+};
+
+enum BoardRoles
+{
+  TOUCHPAD,
+  POTENTIOMETER
+};
 
 class MiDispositivoMIDI_V3
 {
-public: MiDispositivoMIDI_V3(uint8_t numPages, uint8_t numExtensions);
+public: 
+    
+    MiDispositivoMIDI_V3(HardwareConfigurations hwConfig, BoardRoles bRoles[MAX_EXTENSIONS]);
+    ~MiDispositivoMIDI_V3();
     
     void loop();
     void initializeLEDs();
-    void setMidiNotes(uint8_t notes[][LEDPAD_NUM]);
-    void setMidiVeloc(uint8_t veloc[][LEDPAD_NUM]);
+    void setMidiNotes(uint8_t notes[MAX_EXTENSIONS][LEDPAD_NUM]);
+    void setMidiVeloc(uint8_t veloc[MAX_EXTENSIONS][LEDPAD_NUM]);
     void setOnColors(uint8_t rgbColors[RGB_COLORS]);
     void setOffColors(uint8_t rgbColors[RGB_COLORS]);
     void setPixelColor(uint8_t expansion,
                        uint8_t led,
                        uint8_t rgbColors[RGB_COLORS]);
     void setInterrupt(void (* functionPointer)(), double seconds);
-    void setMidiChannel(uint8_t midiChannel);
     
 protected:
+
+    // when using more than one device, different configurations are possible
+    HardwareConfigurations _hwConfig;
+
+    // every 4x4 device can have buttons (PADs) or potentiometers
+    BoardRoles _bRoles[MAX_EXTENSIONS];
+
     // number of hardware extensions [0:MAX_EXTENSIONS]
     uint8_t _numberExtensions;
 
-    // number of pages [0:MAX_PAGE]
-    uint8_t _numPages;
+    // n of rows of the hw setup, 4 for one device
+    uint8_t _numOfRows;
+
+    // n of cols of the hw setup, 4 for one device
+    uint8_t _numOfCols;
 
     // color per led for all the device
-    uint8_t _ledPad[MAX_EXTENSIONS][LEDPAD_NUM][RGB_COLORS] = {{{0}}};
+    uint8_t _ledColors[MAX_EXTENSIONS][LEDPAD_NUM][RGB_COLORS] = {{{0}}};
 
     // last value read by each button
-    uint8_t _lastRead[MAX_EXTENSIONS][LEDPAD_NUM]           =  {{0}};
+    uint8_t _lastRead[MAX_EXTENSIONS][LEDPAD_NUM]  = {{0}};
 
     // midi note sent by each button
-    uint8_t _midiNotes[MAX_EXTENSIONS][LEDPAD_NUM]          =  {{0}};
+    uint8_t _midiNotes[MAX_EXTENSIONS][LEDPAD_NUM] = {{0}};
 
     // midi velocity sent by each button
-    uint8_t _midiVeloc[MAX_EXTENSIONS][LEDPAD_NUM]          =  {{0}};
+    uint8_t _midiVeloc[MAX_EXTENSIONS][LEDPAD_NUM] = {{0}};
 
     // default color for all leds when the button is on
     uint8_t _onColors[RGB_COLORS];
@@ -110,9 +135,6 @@ protected:
     // each page sends different notes
     uint8_t _currentPage;
 
-    // midi channel used for midi tx
-    uint8_t _midiChannel;
-
     void readPADs();
     void readPage();
     void updateLEDs();
@@ -120,11 +142,6 @@ protected:
                       uint8_t copyTo[RGB_COLORS]);
 
     void generateNotesVeloc(uint8_t numberOfExtensions);
-
-    void note(PADstatus status,
-              byte channel,
-              byte pitch,
-              byte velocity);
 
     void noteOn(byte channel,
                 byte pitch,
@@ -134,7 +151,11 @@ protected:
                  byte pitch,
                  byte velocity);
 
-    virtual void PADaction(PADstatus status, uint8_t extension, uint8_t pad);
+    // Functions to be overrided by the user
+    virtual void buttonPressed(uint8_t extension, uint8_t pad);
+    virtual void buttonReleased(uint8_t extension, uint8_t pad);
+    virtual void buttonHolded(uint8_t extension, uint8_t pad);
+    virtual void potentiometerMoved(uint8_t extension, uint8_t pad, int value);
 };
 
 #endif

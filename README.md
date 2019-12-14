@@ -1,5 +1,7 @@
 <h1 align="center"> ⭐️ MiDispositivoMIDI V3 ⭐️ </h1>
 
+[![Build Status](https://travis-ci.org/Bananut-Electronics/MiDispositivoMIDI_V3.svg?branch=master)](https://travis-ci.org/Bananut-Electronics/MiDispositivoMIDI_V3)
+
 <p align="center">
   <a href="www.facebook.com/bananutelectronics">
     <img width=50% src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/mdmv3_gif.gif">
@@ -48,11 +50,10 @@
 
 <p align="center">
   <a href="#about-us">About us</a> •
-  <a href="#history">History</a> •
   <a href="#midispositivomidi-v3">MiDispositivoMIDI V3</a> •
-  <a href="#expansions">Expansions</a> •
   <a href="#documentation">Documentation</a> •
-  <a href="#media">Media</a> •
+  <a href="#expansions">Expansions</a> •
+  <a href="#faq">FAQ</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#license">License</a>
 </p>
@@ -74,10 +75,6 @@ Hi! We are BanaNut Electronics and we develop software and hardware for Arduino 
 
 ---
 
-
-<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn2.png">
-
-# History
 Everything started with the first version at the Polytechnical University of Madrid (UPM) in 2013. We were a couple of young students interested in music and electronics, and we came up with this idea. We started reusing some hardware, mainly found at SparkFun's website, but only one year later, we had the second version that was fully designed by us. After some trial and error and feedback from users and friends, we released this third version V3 in 2017. We not only released the code, but also we started producing devices and selling them on the internet, first in our web and later on at Tindie.com store.
 
 During the years, the different versions of MiDispositivoMIDI have been used by many people, engineers, musicians and even kids. We gave some workshops at UPM Madrid for students in Electrical and Telecommunications Engineering, where we gave all the materials and the students had to solder, assembly and code the device.
@@ -120,13 +117,34 @@ These are the features of our device:
 <img width="400" height="225" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_4By4_GIF.gif">  <img width="350" height="225" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/MDM_V3_4By4_PIC1.jpg">
 </a>
 
+We invite you to check our YouTube channel, where we post videos about our devices. You can also follow other social networks such as Instagram o Facebook.
+
+* https://www.youtube.com/watch?v=3QnzLwpbpRE&t
+* https://www.youtube.com/watch?v=8WFfShg-0Dk
+* https://www.youtube.com/watch?v=2y8fhmTmedI
+* https://www.youtube.com/watch?v=TsuVpFoLFyI
+
+---
+
+<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn5.png">
+
+# Documentation
+
+We provide a C++ Arduino library that you can use with our device, that simplifies the tasks of handling the LEDs and buttons. The code is self documented, but we have also written a nice Wiki page where you can find more information about the hardware, some hints about MIDI protocol and some low level software examples in Arduino, that will allow you to understand how it works:
+* Wiki: https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/wiki
+
+TODO: Write some nice code snippets
+```cpp
+//TODO
+```
+
 ---
 
 <img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn4.png">
 
 # Expansions
 
-Our device has a modular design, which means that with the same hardware, you can keep adding modules to convert it into a bigger controller. For example, if you put four MiDispositivoMIDI V3 into a 8x8 configuration, you will have 64 buttons. All this can be done using the same hardware and with very few modificatons in the code. Note that you can also replace a 4x4 button matrix by a 4x4 potentiometer matrix, but this feature is not implemented yet.
+Our device has a modular design, which means that with the same hardware, you can add modules to convert it into a bigger controller. For example, if you put four MiDispositivoMIDI V3 into a 8x8 configuration, you will have 64 buttons. All this can be done using the same hardware and with very few modificatons in the code. Note that you can also replace a 4x4 button matrix by a 4x4 potentiometer matrix, but this feature is not implemented yet.
 
 <p align="center">
 <a href="www.facebook.com/bananutelectronics">
@@ -152,27 +170,20 @@ Same as before, you can connect the devices with a different configuration. Note
 ## 4x8 Configuration
 TODO
 
----
-
-<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn5.png">
-
-# Documentation
-
-We provide a C++ Arduino library that you can use with our device, that simplifies the tasks of handling the LEDs and buttons. The code is self documented, but we have also written a nice Wiki page where you can find more information about the hardware, some hints about MIDI protocol and some low level software examples in Arduino, that will allow you to understand how it works:
-* Wiki: https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/wiki
+## Potentiometer Expansion
+TODO
 
 ---
 
-<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn6.png">
+<img align="left" width="100" height="100" src="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/blob/master/images/header_bn2.png">
 
-# Media
+# FAQ
 
-We invite you to check our YouTube channel, where we post videos about our devices. You can also follow other social networks such as Instagram o Facebook.
+Feel free to send us a mail to bananutelectronics@gmail.com if you have any question, but read before our FAQ since there are some common issues that can be fixed quite easily:
 
-* https://www.youtube.com/watch?v=3QnzLwpbpRE&t
-* https://www.youtube.com/watch?v=8WFfShg-0Dk
-* https://www.youtube.com/watch?v=2y8fhmTmedI
-* https://www.youtube.com/watch?v=TsuVpFoLFyI
+* **I can't load code to my device. Why?** Make sure that in the Arduino IDE boards section (Tool->Boards) you have selected "Arduino Leonardo"
+* **I was playing with some code, and now the device is gone form the serial port list. Why?** If you were playing with some experimental code, you might have screwed up the "operative system" of the Arduino. But no worries, the fix is pretty straightforward. Open an example from the basic library (i.e. Examples->Basics-Blink) and hit the "Upload" button. You will first see that it is "Compiling" and that that is "Loading". Click the reset button right after "Compiling" is finished. With this you should get the bootloader running and you will be able to load the code. After this, you should be able to see the device in the serial port list as usual. Note that the reset button is the one on the top (not the ones on the left).
+* **When I press a button, the LED takes a bit to light up, why?** There should not be any delay when you press a button, so right after pressing the pad, you should see that it lights up (assuming of course that it configured to do so). If this delay is present, please, make sure that you have a MIDI program reading the port in your computer.
 
 ---
 
