@@ -17,35 +17,52 @@
 
 // Include the library
 #include "MiDispositivoMIDI_V3.h"
+#include <MIDIUSB.h>
+
+
+// Algorithm parameters
+#define MAX_MIDI_NOTE 115
+#define MIN_MIDI_NOTE 24
+
+#define FLOOR_PROB 5  // Floor note probability in a 0 to 100 scale
+#define GAUSS_SIGMA 2.5  // Sigma for the target note Gaussian
+#define SEMITONES 12  // Semitones per octave
 
 enum Scale {RUMBITA, BACH, PACO, CHINESE};
 
 class MiDispositivoMIDIAutomelody : public MiDispositivoMIDI_V3 {
-
-public: MiDispositivoMIDIAutomelody(uint8_t numPages, uint8_t numExtensions): MiDispositivoMIDI_V3(numPages, numExtensions)
+public: MiDispositivoMIDIAutomelody(HardwareConfigurations hwConfig, BoardRoles bRoles[MAX_EXTENSIONS]): MiDispositivoMIDI_V3(hwConfig, bRoles)
 {
     _transposition = 0;
     _current_octave = _origin_octave;
-
+    _current_note = _origin_octave * SEMITONES + _transposition;
 
     setTransModel(BACH);
     initializeLEDs();
+
+    // Initialize the Gaussian 
+    float gauss_center = SEMITONES / 2.0;
+    for (float i = 0; i < SEMITONES; i++)
+    {
+        _gaussian[(uint8_t)i] = (uint8_t)(100 * exp(-0.5*pow((i - gauss_center) / GAUSS_SIGMA, 2.)));
+    }
+    
 }
 
 protected:
-    const uint8_t _origin_chroma = 0;
     const uint8_t _origin_octave = 5;
     
     uint8_t _current_octave;
     int16_t _transposition;
-
     uint8_t _current_note;
 
-    int8_t _note_shift[8] = {-7, -4, -3, -1,
-                              7,  4,  3,  1};
+    int8_t _search_range[8] = {-10, -7, -4, -2,
+                              10,  7,  4,  2};
 
     uint8_t _COLOR_SCALE_ON[3] = {128, 0, 128};
     uint8_t _COLOR_SCALE_OFF[3] = {20, 0, 20};
+
+    uint8_t _gaussian[SEMITONES] = {};
 
     Scale _scale;
 
@@ -154,138 +171,110 @@ protected:
 
     void initializeLEDs()
     {
-        // Note  pads
+        // note pads
         for(uint8_t i = 0; i < 8; i++)
         {
             for(uint8_t j = 0; j < _numberExtensions; j++)
             {
-                setRgbColors(_offColors, _ledPad[j][i]);
+                setRgbColors(_offColors, _ledColors[j][i]);
             }
         }
 
-        // Octave PADs
+        // octave PADs
         updateOctaveLEDs();
         updateTranspositionLEDs();
 
-        // Scale pads
+        // scale pads
         for(uint8_t i = 12; i < 16; i++)
         {
             for(uint8_t j = 0; j < _numberExtensions; j++)
             {
-                setRgbColors(_COLOR_SCALE_OFF, _ledPad[j][i]);
+                setRgbColors(_COLOR_SCALE_OFF, _ledColors[j][i]);
             }
         }
-        setRgbColors(_COLOR_SCALE_ON, _ledPad[0][12 + _scale]);
-    }
-
-    void PADaction(PADstatus status, uint8_t extension, uint8_t pad)
-    {
-        if (status == ONSET)
-        {
-            if (pad < 8)
-            {
-                setRgbColors(_onColors, _ledPad[extension][pad]);
-                updateNote(extension, pad);
-            }
-            else if (pad >= 8 && pad < 10)
-            {
-                /* Octave trainsposition */
-                if (pad == 8)
-                {
-                    _current_note += 12;
-                }
-                if (pad == 9)
-                {
-                    _current_note -= 12;
-                }
-                _current_octave = _current_note / 12;
-
-                updateOctaveLEDs();
-                return;
-            }
-            else if (pad >= 10 && pad < 12)
-            {
-                /* Semitone Transposition */
-                if (pad == 10)
-                {
-                    if (_transposition < 12)
-                    {
-                        _transposition++;
-                        _current_note++;
-                    }
-                }
-                if (pad == 11)
-                {
-                    if (_transposition > -12)
-                    {
-                        _transposition--;
-                        _current_note--;
-                    }
-                }
-                _current_octave = _current_note / 12;
-
-                updateTranspositionLEDs();
-                return;
-            }
-            else if (pad >= 12 && pad < 16)
-            {
-                /* Scale control */
-                setRgbColors(_COLOR_SCALE_OFF, _ledPad[extension][12 + _scale]);
-                setRgbColors(_COLOR_SCALE_ON, _ledPad[extension][pad]);
-                setTransModel(pad - 12);
-                return;
-            }
-
-        }
-        else if (status == OFFSET)
-        {
-            if (pad < 8)
-            {
-                setRgbColors(_offColors, _ledPad[extension][pad]);
-            }
-        }
-        else if (status == ON)
-        {
-            // nothing to do in this case
-            return;
-        }
-
-        note(status,
-             _midiChannel,
-             _midiNotes[extension][pad],
-             _midiVeloc[extension][pad]);
+        setRgbColors(_COLOR_SCALE_ON, _ledColors[0][12 + _scale]);
     }
 
     void updateNote(uint8_t extension, uint8_t pad)
     {
-        // update input note and bounds
-        uint8_t in_note = _current_note + _note_shift[pad];
-        uint8_t in_octave = in_note / 12;
-        uint8_t in_chroma = in_note % 12;
+        // update input note and boundaries
+        uint8_t in_note = _current_note + _search_range[pad];
+        uint8_t in_octave = in_note / SEMITONES;
+        uint8_t in_chroma = in_note % SEMITONES;
 
-        // Compute the cumulative probalities.
-        uint32_t cumulative_probs[12] = {0};
-        for (size_t i = 0; i < 12; i++)
+        uint16_t shifted_gaussian[SEMITONES] = {};
+        int16_t gauss_shift = 6 - ((in_chroma + _search_range[pad]) % SEMITONES);
+
+        // define the range on notes that the model is able to choose
+        // - PADs 0 to 3 will give a lower or equal note with the following range
+        //   - 0: [0,  -2] semitones
+        //   - 1: [0,  -4] semitones
+        //   - 2: [0,  -7] semitones
+        //   - 3: [0, -10] semitones
+        //
+        // - PAD  4 to 7 will give a higher or equal note with the following range
+        //   - 0: [0,  +2] semitones
+        //   - 1: [0,  +4] semitones
+        //   - 2: [0,  +7] semitones
+        //   - 3: [0, +10] semitones
+        //
+        //  the number of seminotes from which the model can choose is given by
+        //  the _search_range variable
+        uint8_t low_range, high_range;
+        if (pad < 4)
         {
-            cumulative_probs[i] = _chroma_probs[i] * _trans_model[in_chroma][i];
+            low_range = (SEMITONES + in_chroma + _search_range[pad]) % SEMITONES;
+            high_range = in_chroma;
+        }
+        else if (pad >= 4)
+        {
+            low_range = in_chroma;
+            high_range = (SEMITONES + in_chroma + _search_range[pad]) % SEMITONES;
+        }
+        bool inverted_range = high_range < low_range;
 
-            if (i > 0)
-            {
-                cumulative_probs[i] += cumulative_probs[i - 1];
-            }
+        for (uint8_t i = 0; i < SEMITONES; i++)
+        {
+            // we shift these values because in C++ `%` performs the `reminder`
+           //  operator, which dosnt't acts like `modulo` for negative values
+            uint8_t idx = (SEMITONES + gauss_shift + i) % SEMITONES;
+            shifted_gaussian[i] = _gaussian[idx];
         }
 
-        // Random sampling.
-        long sample = random(cumulative_probs[11] + 1);
+        // compute the cumulative distribution function
+        uint32_t cumulative_probs[SEMITONES] = {0};
+        for (uint8_t i = 0; i < SEMITONES; i++)
+        {
+            // probability flooring
+            // give a small probability to each note/transition even if it was never seen by the model
+            // otherwise we may encounter that all the notes in a particular range have p=0
+            uint32_t chroma_prob = _chroma_probs[i] > FLOOR_PROB? _chroma_probs[i]: FLOOR_PROB;
+            uint32_t trans_prob = _trans_model[in_chroma][i] > FLOOR_PROB? _trans_model[in_chroma][i]: FLOOR_PROB;
 
-        int min_distance = cumulative_probs[11];
-        int distance = cumulative_probs[11];
+            // p=0 for the notes out of range
+            if (inverted_range && ( i < low_range && i > high_range)) cumulative_probs[i] = 0;
+            else if (!inverted_range && (i < low_range || i > high_range )) cumulative_probs[i] = 0;
+            // get the joint probs for the rest
+            else cumulative_probs[i] = chroma_prob * trans_prob * shifted_gaussian[i];
+
+            // accumulate
+            if (i > 0) cumulative_probs[i] += cumulative_probs[i - 1];
+        }
+
+        // we can use the built-in Arduino random function
+        // to sample from the CDF
+        int32_t sample = random(cumulative_probs[11] + 1);
+
+        int32_t min_distance = cumulative_probs[11];
+        int32_t distance = cumulative_probs[11];
         uint8_t out_chroma = 0;
 
-        // Check which note was attached to the "winner" bin.
-        for (size_t i = 0; i < 12; i++)
+        // measure which note boundary is closer to the
+        // random point
+        for (uint8_t i = 0; i < SEMITONES; i++)
         {
             distance = cumulative_probs[i] - sample;
+
             if ((distance > 0) && (distance < min_distance))
             {
                 min_distance = distance;
@@ -293,69 +282,67 @@ protected:
             }
         }
 
+        uint8_t out_note = out_chroma + in_octave * SEMITONES;
 
-        uint8_t out_note = out_chroma + in_octave * 12;
+        // check that we don't get out of the desired range
+        if (out_note > MAX_MIDI_NOTE) out_note -= SEMITONES;
+        if (out_note < MIN_MIDI_NOTE) out_note += SEMITONES;
 
-        // Center the note in the target range
-        // if we wanted a lower note make sure it is a lower note,
-        // other wase octave it
-        if (pad < 4)
-        {
+
+        // octave corrections
+        //
+        // if we pressed buttons 0 to 3 we are going down
+        if ((pad < 4))
             if (out_note > in_note)
-            {
-                out_note -= 12;
-            }
-        }
+                if (out_note > MIN_MIDI_NOTE)
+                    out_note -= SEMITONES;
 
-        // Same for the higher case.
+
+        // if we pressed buttons 4 to 7 we are going up
         if (pad >= 4)
-        {
             if (out_note < in_note)
-            {
-                out_note += 12;
-            }
-        }
+                if (out_note < (MAX_MIDI_NOTE - SEMITONES))
+                    out_note += SEMITONES;
+
 
         // update variables
         _current_note = out_note;
-        _current_octave = out_note / 12;
+        _current_octave = out_note / SEMITONES;
 
-        // Save the note with the current transposition value
+        // save the note with the current transposition value
         _midiNotes[extension][pad] = _current_note + _transposition;
 
         // update octave LEDs
         updateOctaveLEDs();
     }
 
-    // octave 5 stands for C4
-    // going up will increasingly light
-    // right octave PAD and goung down
-    // will increasingly light up the
-    // left octave PAD.
+    // octave 5 stands for C4 going up will increasingly light
+    // right octave PAD and goung down will increasingly light
+    // up the left octave PAD
     void updateOctaveLEDs()
     {
         if (_current_octave < 5)
         {
             uint8_t intensity = (4 - _current_octave) * 63.75f;
             uint8_t color[3] = {0, 0, intensity};
-            setRgbColors(color, _ledPad[0][9]);
+            setRgbColors(color, _ledColors[0][9]);
         }
         if (_current_octave > 5)
         {
             // MIDI messages can go up to octave 11.
             // Clip the signal so we don't exceed 
-            // uint8 range.
+            // uint8 range
             uint8_t octave_clipped = min(_current_octave, 9);
 
             uint8_t intensity = (octave_clipped - 5) * 63.75f;
             uint8_t color[3] = {0, 0, intensity};
-            setRgbColors(color, _ledPad[0][8]);
+            setRgbColors(color, _ledColors[0][8]);
         }
         if (_current_octave == 5)
         {
             uint8_t color[3] = {0, 0, 0};
-            setRgbColors(color, _ledPad[0][8]);
-            setRgbColors(color, _ledPad[0][9]);
+            setRgbColors(color, _ledColors[0][8]);
+            setRgbColors(color, _ledColors[0][9]);
         }
     }
 
@@ -366,7 +353,7 @@ protected:
         {
             uint8_t intensity = -_transposition * 21.25f;
             uint8_t color[3] = {0, intensity, 0};
-            setRgbColors(color, _ledPad[0][11]);
+            setRgbColors(color, _ledColors[0][11]);
         }
         if (_transposition > 0)
         {
@@ -375,25 +362,107 @@ protected:
             // uint8 range.
             uint8_t intensity = _transposition * 21.25f;
             uint8_t color[3] = {0, intensity, 0};
-            setRgbColors(color, _ledPad[0][10]);
+            setRgbColors(color, _ledColors[0][10]);
         }
         if (_transposition == 0)
         {
             uint8_t color[3] = {0, 0, 0};
-            setRgbColors(color, _ledPad[0][10]);
-            setRgbColors(color, _ledPad[0][11]);
+            setRgbColors(color, _ledColors[0][10]);
+            setRgbColors(color, _ledColors[0][11]);
         }
-        
     }
+
+    void buttonPressed(uint8_t extension, uint8_t pad)
+    {
+        if (pad < 8)
+        {
+            setRgbColors(_onColors, _ledColors[extension][pad]);
+            updateNote(extension, pad);
+
+            noteOn(DEFAULT_MIDI_CHANNEL,
+                   _midiNotes[extension][pad],
+                   _midiVeloc[extension][pad]);
+
+            MidiUSB.flush();
+        }
+        else if (pad >= 8 && pad < 10)
+        {
+            /* Octave trainsposition */
+            if (pad == 8)
+            {
+                _current_note += SEMITONES;
+            }
+            if (pad == 9)
+            {
+                _current_note -= SEMITONES;
+            }
+            _current_octave = _current_note / SEMITONES;
+
+            updateOctaveLEDs();
+            return;
+        }
+        else if (pad >= 10 && pad < 12)
+        {
+            /* Semitone Transposition */
+            if (pad == 10)
+            {
+                if (_transposition < SEMITONES)
+                {
+                    _transposition++;
+                    _current_note++;
+                }
+            }
+            if (pad == 11)
+            {
+                if (_transposition > -SEMITONES)
+                {
+                    _transposition--;
+                    _current_note--;
+                }
+            }
+            _current_octave = _current_note / SEMITONES;
+
+            updateTranspositionLEDs();
+            return;
+        }
+        else if (pad >= 12 && pad < 16)
+        {
+            /* Scale control */
+            setRgbColors(_COLOR_SCALE_OFF, _ledColors[extension][12 + _scale]);
+            setRgbColors(_COLOR_SCALE_ON, _ledColors[extension][pad]);
+            setTransModel(pad - 12);
+            return;
+        }
+    }
+
+    void buttonReleased(uint8_t extension, uint8_t pad)
+    {
+        if (pad < 8)
+        {
+            setRgbColors(_offColors, _ledColors[extension][pad]);
+
+            noteOff(DEFAULT_MIDI_CHANNEL,
+                    _midiNotes[extension][pad],
+                    _midiVeloc[extension][pad]);
+
+            MidiUSB.flush();
+        }
+    }
+
+    void buttonHolded(uint8_t extension, uint8_t pad)
+    {
+        // nothing to do in this case
+        return;
+    }
+
 };
 
-MiDispositivoMIDIAutomelody mdma = MiDispositivoMIDIAutomelody(4, 1);
+BoardRoles bRoles[1] = {TOUCHPAD};
+MiDispositivoMIDIAutomelody mdma = MiDispositivoMIDIAutomelody(SINGLE_DEVICE_4X4, bRoles);
 
-void setup()
+void setup() {}
+
+void loop()
 {
-    Serial.begin(9600);
-}
-
-void loop() {
   mdma.loop();
 }
