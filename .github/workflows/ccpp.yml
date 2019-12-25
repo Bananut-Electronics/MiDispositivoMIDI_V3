@@ -7,17 +7,5 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - name: step1
-      run: brew install arduino-cli
-    - name: step2
-      run: arduino-cli core update-index
-    - name: step3
-      run: arduino-cli core install arduino:avr
-    - name: step4
-      run: arduino-cli lib install "Adafruit NeoPixel"
-    - name: step5
-      run: arduino-cli lib install "MIDIUSB"
-    - name: step6
-      run: arduino-cli lib install "TimerOne"
-    - name: simpleStuffTodoCompileMoreThingsLMAO
-      run: arduino-cli -v compile --fqbn arduino:avr:leonardo MDM_V3_Library4x16/MDM_V3_Library4x16.ino
+    - name: make
+      run: make
