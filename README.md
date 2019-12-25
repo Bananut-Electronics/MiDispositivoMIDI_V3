@@ -1,6 +1,6 @@
 <h1 align="center"> ⭐️ MiDispositivoMIDI V3 ⭐️ </h1>
 
-[![Build Status](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/workflows/CCI/badge.svg)
+![Build Status](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/workflows/CCI/badge.svg)
 
 <p align="center">
   <a href="www.facebook.com/bananutelectronics">
