@@ -1,4 +1,7 @@
 <h1 align="center"> ⭐️ MiDispositivoMIDI V3 ⭐️ </h1>
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Build Status](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/workflows/CCI/badge.svg)
 
@@ -203,3 +206,22 @@ Feel free to create a pull request with your new feature, we will be pleased to 
 # License
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">MiDispositivoMIDI</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="www.bananutelectronics.com" property="cc:attributionName" rel="cc:attributionURL">Alvaro Lopez & Pablo de Miguel Morales</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br />
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/pabloEntropia"><img src="https://avatars1.githubusercontent.com/u/16823825?v=4" width="100px;" alt=""/><br /><sub><b>Pablo Alonso</b></sub></a><br /><a href="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/commits?author=pabloEntropia" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

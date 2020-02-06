@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "pabloEntropia",
+      "name": "Pablo Alonso",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/16823825?v=4",
+      "profile": "https://github.com/pabloEntropia",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "MiDispositivoMIDI_V3",
+  "projectOwner": "Bananut-Electronics",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
