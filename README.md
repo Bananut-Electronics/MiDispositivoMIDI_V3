@@ -1,6 +1,6 @@
 <h1 align="center"> ⭐️ MiDispositivoMIDI V3 ⭐️ </h1>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Build Status](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/workflows/CCI/badge.svg)
@@ -217,6 +217,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/pabloEntropia"><img src="https://avatars1.githubusercontent.com/u/16823825?v=4" width="100px;" alt=""/><br /><sub><b>Pablo Alonso</b></sub></a><br /><a href="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/commits?author=pabloEntropia" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/per1234"><img src="https://avatars1.githubusercontent.com/u/8572152?v=4" width="100px;" alt=""/><br /><sub><b>per1234</b></sub></a><br /><a href="https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/commits?author=per1234" title="Code">💻</a></td>
   </tr>
 </table>
 
