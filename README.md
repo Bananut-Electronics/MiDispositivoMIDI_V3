@@ -1,8 +1,9 @@
 <h1 align="center"> ⭐️ MiDispositivoMIDI V3 ⭐️ </h1>
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+*This repository is no longer officially maintained but feel free to open a pull request with your contribution. As we ran out of devices, we don't sell it anymore, but if you you want one you can find here all the schematics, manuals, documentations and code to build your own.*
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 ![Build Status](https://github.com/Bananut-Electronics/MiDispositivoMIDI_V3/workflows/CCI/badge.svg)
 
 <p align="center">
